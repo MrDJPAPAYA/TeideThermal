@@ -25,26 +25,38 @@ for k = 1:length(ti)
     F = albedo_F_f(beta);
     B = zeros(N,1);
     K0 = zeros(N,1);
-               
-      if ti(k)>9.5*T0
+    
+     %LEDs On/Off condition
+     
+      if 0<ti(k)<10
          SC(8).qgen=100;
          SC(9).qgen=100;
          SC(10).qgen=100;
          SC(11).qgen=100;
+      elseif 10<ti(k)<5548 %final primera orbita
+         SC(8).qgen=0;
+         SC(9).qgen=0;
+         SC(10).qgen=0;
+         SC(11).qgen=0;   
+      elseif 5548<ti(k)<5558 
+         SC(8).qgen=100;
+         SC(9).qgen=100;
+         SC(10).qgen=100;
+         SC(11).qgen=100;
+      elseif 5558<ti(k)<11096 %end second orbit
+         SC(8).qgen=0;
+         SC(9).qgen=0;
+         SC(10).qgen=0;
+         SC(11).qgen=0;
       end
+      
       
     for i = 1:N
                        
         if ismember(0,SC(i).coupling) %External loads
             cos_s = us.'*SC(i).n; cos_s = cos_s*(cos_s>0);
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
-            
-            
-%        if 9*T0>k>9.5*T0
-%          qgent=1000;
-%       else   
-%           qgent=SC(i).qgen;
-%       end     
+             
 
             B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen;
             K0(i) = SC(i).A*SC(i).e*sigma*Ti(i)^3;
