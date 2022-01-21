@@ -28,28 +28,40 @@ for k = 1:length(ti)
     
      %LEDs On/Off condition
      
-      if 0<ti(k)<10
+%       if 0<ti(k)<10
+%          SC(8).qgen=100;
+%          SC(9).qgen=100;
+%          SC(10).qgen=100;
+%          SC(11).qgen=100;
+%       end
+%       
+%       if 10<ti(k)<5548 %final primera orbita
+%          SC(8).qgen=0;
+%          SC(9).qgen=0;
+%          SC(10).qgen=0;
+%          SC(11).qgen=0; 
+%       end
+      
+%       if 5548<ti(k)<5558 
+%          SC(8).qgen=100;
+%          SC(9).qgen=100;
+%          SC(10).qgen=100;
+%          SC(11).qgen=100;
+%       end
+
+      if 54300<ti(k)<54301
          SC(8).qgen=100;
-         SC(9).qgen=100;
+         SC(9).qgen=100;    
          SC(10).qgen=100;
          SC(11).qgen=100;
-      elseif 10<ti(k)<5548 %final primera orbita
-         SC(8).qgen=0;
-         SC(9).qgen=0;
-         SC(10).qgen=0;
-         SC(11).qgen=0;   
-      elseif 5548<ti(k)<5558 
-         SC(8).qgen=100;
-         SC(9).qgen=100;
-         SC(10).qgen=100;
-         SC(11).qgen=100;
-      elseif 5558<ti(k)<11096 %end second orbit
+      end
+      
+      if 54301<ti(k)
          SC(8).qgen=0;
          SC(9).qgen=0;
          SC(10).qgen=0;
          SC(11).qgen=0;
-      end
-      
+       end
       
     for i = 1:N
                        
