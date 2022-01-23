@@ -49,14 +49,14 @@ for k = 1:length(ti)
 %          SC(11).qgen=100;
 %       end
 
-      if 54300<ti(k)<54301
+      if 55300<ti(k)<55311
          SC(8).qgen=100;
          SC(9).qgen=100;    
          SC(10).qgen=100;
          SC(11).qgen=100;
       end
       
-      if 54301<ti(k)
+      if 55311<ti(k)
          SC(8).qgen=0;
          SC(9).qgen=0;
          SC(10).qgen=0;
