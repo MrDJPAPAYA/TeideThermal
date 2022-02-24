@@ -9,7 +9,7 @@ Ti = ones(N,1)*300; %[K]
 D = ([SC.m].*[SC.Cp])/dt.*eye(N);
 %D(2,2) = 0;
 
-t = find(ti>9*T0);
+t = find(ti>T0);%find(ti>9*T0);
 T = zeros(N,length(t));
 q = zeros(N,N,length(t));
 Q = zeros(N,length(t));
@@ -28,41 +28,54 @@ for k = 1:length(ti)
     
      %LEDs On/Off condition
      
-%       if 0<ti(k)<10
+% %       if 0<ti(k)<10
+% %          SC(8).qgen=100;
+% %          SC(9).qgen=100;
+% %          SC(10).qgen=100;
+% %          SC(11).qgen=100;
+% %       end
+% %       
+% %       if 10<ti(k)<5548 %final primera orbita
+% %          SC(8).qgen=0;
+% %          SC(9).qgen=0;
+% %          SC(10).qgen=0;
+% %          SC(11).qgen=0; 
+% %       end
+
+
+
+% y si el calor de los leds fuera un vector que tenga los valores de el calor generado durante los leds en la simulacion
+%ego qgen=[ 0 0 0 0 0 0 0 0 0 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0]
+
+
+    if 5548<ti(k)<5658 
+         SC(8).qgen=100;
+         SC(9).qgen=100;
+         SC(10).qgen=100;
+         SC(11).qgen=100;
+    end
+
+    if 5658<ti(k)<55311 
+        SC(8).qgen=0;
+        SC(9).qgen=0;
+        SC(10).qgen=0;
+        SC(11).qgen=0; 
+    end
+
+%       if 55300<ti(k)<55311
 %          SC(8).qgen=100;
-%          SC(9).qgen=100;
+%          SC(9).qgen=100;    
 %          SC(10).qgen=100;
 %          SC(11).qgen=100;
 %       end
 %       
-%       if 10<ti(k)<5548 %final primera orbita
+%       if 55311<ti(k)
 %          SC(8).qgen=0;
 %          SC(9).qgen=0;
 %          SC(10).qgen=0;
-%          SC(11).qgen=0; 
-%       end
-      
-%       if 5548<ti(k)<5558 
-%          SC(8).qgen=100;
-%          SC(9).qgen=100;
-%          SC(10).qgen=100;
-%          SC(11).qgen=100;
-%       end
-
-      if 55300<ti(k)<55311
-         SC(8).qgen=100;
-         SC(9).qgen=100;    
-         SC(10).qgen=100;
-         SC(11).qgen=100;
-      end
-      
-      if 55311<ti(k)
-         SC(8).qgen=0;
-         SC(9).qgen=0;
-         SC(10).qgen=0;
-         SC(11).qgen=0;
-       end
-      
+%          SC(11).qgen=0;
+%        end
+%       
     for i = 1:N
                        
         if ismember(0,SC(i).coupling) %External loads
@@ -83,7 +96,7 @@ for k = 1:length(ti)
     
     Ti = (D+C)\(D*Ti+B);
     
-    if ti(k)>9*T0
+    if  ti(k)>T0 %ti(k)>9*T0
         j = j + 1;
         T(:,j) = Ti;
         
