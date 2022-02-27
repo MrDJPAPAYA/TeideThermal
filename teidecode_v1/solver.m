@@ -48,19 +48,19 @@ for k = 1:length(ti)
 %ego qgen=[ 0 0 0 0 0 0 0 0 0 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0]
 
 
-    if 5548<ti(k)<5658 
-         SC(8).qgen=100;
-         SC(9).qgen=100;
-         SC(10).qgen=100;
-         SC(11).qgen=100;
-    end
-
-    if 5658<ti(k)<55311 
-        SC(8).qgen=0;
-        SC(9).qgen=0;
-        SC(10).qgen=0;
-        SC(11).qgen=0; 
-    end
+%     if 5548<ti(k)<5658 
+%          SC(8).qgen=100;
+%          SC(9).qgen=100;
+%          SC(10).qgen=100;
+%          SC(11).qgen=100;
+%     end
+% 
+%     if 5658<ti(k)<55311 
+%         SC(8).qgen=0;
+%         SC(9).qgen=0;
+%         SC(10).qgen=0;
+%         SC(11).qgen=0; 
+%     end
 
 %       if 55300<ti(k)<55311
 %          SC(8).qgen=100;
@@ -83,7 +83,7 @@ for k = 1:length(ti)
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
              
 
-            B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen;
+            B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen + SC1qgen(k);
             K0(i) = SC(i).A*SC(i).e*sigma*Ti(i)^3;
             
         end
