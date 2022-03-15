@@ -9,7 +9,7 @@ Ti = ones(N,1)*300; %[K]
 D = ([SC.m].*[SC.Cp])/dt.*eye(N);
 %D(2,2) = 0;
 
-t = find(ti>T0);%find(ti>9*T0);
+t = find(ti>T0); %find(ti>9*T0); %
 T = zeros(N,length(t));
 q = zeros(N,N,length(t));
 Q = zeros(N,length(t));
@@ -26,64 +26,14 @@ for k = 1:length(ti)
     B = zeros(N,1);
     K0 = zeros(N,1);
     
-     %LEDs On/Off condition
-     
-% %       if 0<ti(k)<10
-% %          SC(8).qgen=100;
-% %          SC(9).qgen=100;
-% %          SC(10).qgen=100;
-% %          SC(11).qgen=100;
-% %       end
-% %       
-% %       if 10<ti(k)<5548 %final primera orbita
-% %          SC(8).qgen=0;
-% %          SC(9).qgen=0;
-% %          SC(10).qgen=0;
-% %          SC(11).qgen=0; 
-% %       end
-
-
-
-% y si el calor de los leds fuera un vector que tenga los valores de el calor generado durante los leds en la simulacion
-%ego qgen=[ 0 0 0 0 0 0 0 0 0 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0]
-
-
-%     if 5548<ti(k)<5658 
-%          SC(8).qgen=100;
-%          SC(9).qgen=100;
-%          SC(10).qgen=100;
-%          SC(11).qgen=100;
-%     end
-% 
-%     if 5658<ti(k)<55311 
-%         SC(8).qgen=0;
-%         SC(9).qgen=0;
-%         SC(10).qgen=0;
-%         SC(11).qgen=0; 
-%     end
-
-%       if 55300<ti(k)<55311
-%          SC(8).qgen=100;
-%          SC(9).qgen=100;    
-%          SC(10).qgen=100;
-%          SC(11).qgen=100;
-%       end
-%       
-%       if 55311<ti(k)
-%          SC(8).qgen=0;
-%          SC(9).qgen=0;
-%          SC(10).qgen=0;
-%          SC(11).qgen=0;
-%        end
-%       
     for i = 1:N
                        
         if ismember(0,SC(i).coupling) %External loads
             cos_s = us.'*SC(i).n; cos_s = cos_s*(cos_s>0);
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
-             
-
-            B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen + SC1qgen(k);
+             %en este bucle, en que nodo de estan aplicando los calores
+             %esos de mas que he metido? en todos? wtf
+            B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen + SCled1qgen(k)+ SCled2qgen(k) + SCled3qgen(k)+ SCled4qgen(k);
             K0(i) = SC(i).A*SC(i).e*sigma*Ti(i)^3;
             
         end
@@ -96,7 +46,7 @@ for k = 1:length(ti)
     
     Ti = (D+C)\(D*Ti+B);
     
-    if  ti(k)>T0 %ti(k)>9*T0
+    if  ti(k)>T0 %ti(k)>9*T0 %
         j = j + 1;
         T(:,j) = Ti;
         

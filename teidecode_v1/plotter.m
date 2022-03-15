@@ -14,7 +14,7 @@ figdir = ['../Figures/Orb_case' sprintf('%i',orb_case) '_'];
 %% Temperature evolution
 figure(1);
 colours = lines(N);
-markers = {'-o','-s','-d','-v','-^','->','-<','-x','-*','-o','-*','-o','->','-o','-s','-d','-v','-x','-*','-o','-*','-o','-s','-d','-v','-^','->','-<'};
+markers = {'-o','-s','-d','-v','-^','->','-<','-x','-*','-o','-*','-o','->','-o','-s','-d','-v','-x','-*','-o','-*','-o','-s','-d','-v','-^','->','-<','-x'};
 for i=1:N
     p = plot((t-t(1))/T0,T(i,:)-273.15,markers{i},'Color',colours(i,:),'LineWidth',0.6);
     p.MarkerIndices = 1:500:length(t);
