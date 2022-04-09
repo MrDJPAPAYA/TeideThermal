@@ -31,11 +31,14 @@ for k = 1:length(ti)
         if ismember(0,SC(i).coupling) %External loads
             cos_s = us.'*SC(i).n; cos_s = cos_s*(cos_s>0);
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
-             %en este bucle, en que nodo de estan aplicando los calores
-             %esos de mas que he metido? en todos? wtf
-            B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen + SCled1qgen(k)+ SCled2qgen(k) + SCled3qgen(k)+ SCled4qgen(k);
+
+            B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen; 
             K0(i) = SC(i).A*SC(i).e*sigma*Ti(i)^3;
             
+            if 8<i<11; %if the loop is in the leds it shall add the power defined in data
+                B(i)=B(i)+SCledqgen(k);
+            end
+                
         end
     end
     %B(2) = Tc; %Boundary condition/Temperature constraint in node 2
