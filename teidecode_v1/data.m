@@ -72,7 +72,7 @@ ti = (t0:dt:tf).';
  
  %leds power generation
  SCledqgen = zeros(1,length(ti)); 
- SCledqgen (1,44300:44310)=100; %W
+ SCledqgen (1,44300:44350)=50; %W
 
 
 %% Spacecraft data
