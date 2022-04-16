@@ -375,13 +375,6 @@ SC(29).coupling = [3, 4, 5, 6, 8 ,9 ,10, 11];
 SC(29).qgen=0; 
 %SC(29).qgenx= SCled4qgen; %W
 
-% meter varillas ocmo medio de conduccion entre placas
-% generacion de calor del o socmponentes en que punto?
-% cuando encienden los leds ver modos de funcionamiento 
-% tener claro los datos en los que trabajas consultar tabla de mecanica 
-
-
-
 
 %H45 = sigma/(SC(4).R + 1/A + SC(5).R);
 

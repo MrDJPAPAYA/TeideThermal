@@ -9,7 +9,7 @@ Ti = ones(N,1)*300; %[K]
 D = ([SC.m].*[SC.Cp])/dt.*eye(N);
 %D(2,2) = 0;
 
-t = find(ti>T0); %find(ti>9*T0); %
+t = find(ti>T0); %find(ti>9*T0); 
 T = zeros(N,length(t));
 q = zeros(N,N,length(t));
 Q = zeros(N,length(t));
