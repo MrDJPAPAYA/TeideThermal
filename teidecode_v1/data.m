@@ -293,7 +293,6 @@ SC(22).L = 0.7; %ancho
 SC(22).A = 0.08; %not sure
 
 
-
 SC(23).name = 'Node 23, OBC';
 SC(23).m = 0.024; %putos gramos cuidado unidades
 SC(23).Cp = 600;
