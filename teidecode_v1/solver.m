@@ -35,10 +35,15 @@ for k = 1:length(ti)
             B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen; 
             K0(i) = SC(i).A*SC(i).e*sigma*Ti(i)^3;
             
-            if 8<i<11; %if the loop is in the leds it shall add the power defined in data
+            if 8<=i<=11; %if the loop is in the leds it shall add the power defined in data
                 B(i)=B(i)+SCledqgen(k);
             end
-                
+            if 21<=i<=23; %if the loop is in the Tx-Tx and the module
+                B(i)=B(i)+SCradiomode(k);
+            end  
+            if i==20; %if the loop is in Lomo
+                B(i)=B(i)+SCradiomode(k);
+            end
         end
     end
     %B(2) = Tc; %Boundary condition/Temperature constraint in node 2

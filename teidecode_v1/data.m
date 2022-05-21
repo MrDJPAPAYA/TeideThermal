@@ -46,15 +46,17 @@ eclipse_flag = @(gamma) (pi-abs(wrapToPi(gamma)))<delta;
 
 dt = 1; %[s]
 t0 = 0;
-tf = 10*T0; %T0*77.85; %5 days, with 15,57 orbits per day aproximately
+%tf = 10*T0; %T0*77.85; %5 days, with 15,57 orbits per day aproximately
+tf = 432000; %time to complete five days
 ti = (t0:dt:tf).';
 
  %%  Nodes On/Off condition
- 
+ %missing obc and power subsystems
+% Nota: A las 16:00 de cada día el satélite entra en active mode durante 20 minutos para self test y copiar las memorias 
  %day 1
  
  %(85800:86400) reorientation mode 23:50
- %(86400:86410) payload mode 
+ %(86400:86410) payload mode, La siguiente ventana es a las 2:00 y seguimos el mismo proceso?
  %SC(25200:25500) radio on on day 1 at 7:00
  
  %day 2
@@ -70,11 +72,23 @@ ti = (t0:dt:tf).';
  
  %day 6 same as day 1
  
+ 
  %leds power generation
  SCledqgen = zeros(1,length(ti)); 
- SCledqgen (1,44300:44350)=50; %W
+ %SCledqgen (1,44300:44350)=50; %W
+ SCledqgen (1,86400:86410)=50; %W
+ 
+ %radio mode, heat applied to trasceiver and antenas?
+ SCradiomode = zeros(1,length(ti)); 
+ SCradiomode (1,25200:25500)=5; %W at day 1 
+ SCradiomode (1,115200:115500)=5; %W at day 2
+ SCradiomode (1,435600:435900)=5; %W at day 5
+ SCradiomode (1,460800:461100)=5; %W at day 5
 
-
+ %reocriation mode 
+  SCreomode = zeros(1,length(ti));
+  SCreomode (1,85800:86400)=5; %W at day 1 (i whould ask someone about htis shit)
+ 
 %% Spacecraft data
 A = 0.02; %Areas [m^2]
 W = sqrt(A); %Width [m]
