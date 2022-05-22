@@ -76,18 +76,18 @@ ti = (t0:dt:tf).';
  %leds power generation
  SCledqgen = zeros(1,length(ti)); 
  %SCledqgen (1,44300:44350)=50; %W
- SCledqgen (1,86400:86410)=50; %W
+ SCledqgen (1,86400:86410)=50; %W Junito mi niño como de pedrada es esto? esta bien 
  
  %radio mode, heat applied to trasceiver and antenas?
  SCradiomode = zeros(1,length(ti)); 
- SCradiomode (1,25200:25500)=5; %W at day 1 
- SCradiomode (1,115200:115500)=5; %W at day 2
- SCradiomode (1,435600:435900)=5; %W at day 5
- SCradiomode (1,460800:461100)=5; %W at day 5
+ SCradiomode (1,25200:25500) = 5; %W at day 1 supuestos
+ SCradiomode (1,115200:115500) = 5; %W at day 2
+ SCradiomode (1,435600:435900) = 5; %W at day 5
+ SCradiomode (1,460800:461100) = 5; %W at day 5
 
- %reocriation mode 
+ %reorientation mode 
   SCreomode = zeros(1,length(ti));
-  SCreomode (1,85800:86400)=5; %W at day 1 (i whould ask someone about htis shit)
+  SCreomode (1,85800:86400) = 5; %W at day 1 (i whould ask someone about this shit)
  
 %% Spacecraft data
 A = 0.02; %Areas [m^2]
