@@ -32,7 +32,7 @@ for k = 1:length(ti)
             cos_s = us.'*SC(i).n; cos_s = cos_s*(cos_s>0);
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
 
-            B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen; %cre oque falta el area?
+            B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen; 
             K0(i) = SC(i).A*SC(i).e*sigma*Ti(i)^3;
             
             if 8<=i<=11; %if the loop is in the leds it shall add the power defined in data

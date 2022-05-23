@@ -99,7 +99,7 @@ SC = struct([]);
 
 %structure nodes 
 SC(1).name = 'Frame 1, +X';
-SC(1).m = 0.4028;
+SC(1).m = 0.04028;
 SC(1).Cp = 800; %consultar 
 SC(1).A = 0.0052; %calculo a mano aprox
 SC(1).n = [1;0;0];
@@ -110,7 +110,7 @@ SC(1).qgen=0;
 
 
 SC(2).name = 'Frame 2, -X';
-SC(2).m = 0.4028;
+SC(2).m = 0.04028;
 SC(2).Cp = 800;
 SC(2).A = 0.0052; %calculo a mano aprox
 SC(2).n = [-1;0;0];
@@ -121,7 +121,7 @@ SC(2).qgen=0;
 
 
 SC(3).name = 'Beam -Y +Z';
-SC(3).m = 0.0931;
+SC(3).m = 0.007291;
 SC(3).Cp = 800;
 SC(3).A = 0.0021; %calculo a mano aprox
 SC(3).n = [0;-1;1];
@@ -132,7 +132,7 @@ SC(3).qgen=0;
 
 
 SC(4).name = 'Beam +Y +Z';
-SC(4).m = 0.0944;
+SC(4).m = 0.007291;
 SC(4).Cp = 800;
 SC(4).A = 0.0021; %calculo a mano aprox
 SC(4).n = [0;1;1];
@@ -143,7 +143,7 @@ SC(4).qgen=0;
 
 
 SC(5).name = 'Beam +Y -Z';
-SC(5).m = 0.0853;
+SC(5).m = 0.006425;
 SC(5).Cp = 800;
 SC(5).A = 0.0021; %calculo a mano aprox
 SC(5).n = [0;1;-1];
@@ -154,7 +154,7 @@ SC(5).qgen=0;
 
 
 SC(6).name = 'Beam -Y -Z';
-SC(6).m = 0.0815;
+SC(6).m = 0.006425;
 SC(6).Cp = 800;
 SC(6).A = 0.0021; %calculo a mano aprox
 SC(6).n = [0;-1;-1];
@@ -166,7 +166,7 @@ SC(6).qgen=0;
 %payload components 
 
 SC(7).name = 'panel +Z, payload plate ';
-SC(7).m = 0.2192;
+SC(7).m = 0.02192;
 SC(7).Cp = 800; %check
 SC(7).A = 0.0096;
 SC(7).n = [0;0;1];
@@ -177,7 +177,7 @@ SC(7).qgen=0;
 
 
 SC(8).name = 'LED 1 ';
-SC(8).m = 0.018;
+SC(8).m = 0.0018;
 SC(8).Cp = 800; %check
 SC(8).A = 5.7600e-04;
 SC(8).n = [0;0;1];
@@ -188,7 +188,7 @@ SC(8).qgen= 0; %W
 
 
 SC(9).name = 'LED 2';
-SC(9).m = 0.018;
+SC(9).m = 0.0018;
 SC(9).Cp = 800; %check
 SC(9).A = 5.7600e-04;
 SC(9).n = [0;0;1];
@@ -199,7 +199,7 @@ SC(9).qgen=0; %W
 
 
 SC(10).name = 'LED 3';
-SC(10).m = 0.018;
+SC(10).m = 0.0018;
 SC(10).Cp = 800; %check
 SC(10).A = 5.7600e-04;
 SC(10).n = [0;0;1];
@@ -210,7 +210,7 @@ SC(10).qgen=0; %W
 
 
 SC(11).name = 'LED 4 ';
-SC(11).m = 0.018; %0.2192;
+SC(11).m = 0.0018; %0.2192;
 SC(11).Cp = 800; %check
 SC(11).A = 5.7600e-04; %0.0096;
 SC(11).n = [0;0;1];
@@ -221,7 +221,7 @@ SC(11).qgen=0;
 
 
 SC(12).name = 'Node 12, BMS'; % Sub eps low power, Battery managment, this goes next to the batteries , not on payload plate
-SC(12).m = 0.40;
+SC(12).m = 0.02375;
 SC(12).Cp = 600; %isolatros should have more right?
 SC(12).A = 0.01; %?
 SC(12).coupling = [12:19 ,4, 5]; 
@@ -236,7 +236,7 @@ SC(13).coupling = [3, 4, 5, 6];
 SC(13).qgen=0; 
 
 SC(14).name = 'Node 14, LiFePo4 1';
-SC(14).m = 0.039; %39 gramos each
+SC(14).m = 0.039; 
 SC(14).Cp = 600;
 SC(14).A = 0.01; %?
 SC(14).coupling = [13]; 
@@ -283,7 +283,7 @@ SC(19).qgen=0; %supuestamente añadido
 
 
 SC(20).name = 'Node 20, LoMo';
-SC(20).m = 0.070;
+SC(20).m = 0.03849;
 SC(20).Cp = 600; %directed by quentin inventino
 SC(20).A = 0.0086; %HMM ?
 SC(20).coupling = [3, 4, 5, 6];
@@ -298,7 +298,7 @@ SC(21).qgen=0.5;
 
 
 SC(22).name = 'Node 22, Antena module';
-SC(22).m = 0.082;
+SC(22).m = 0.085;
 SC(22).Cp = 600;
 SC(22).coupling = [1, 2, 5, 6];
 SC(22).qgen=2; 
@@ -342,7 +342,7 @@ SC(25).n = [0;-1;0];
 %SC(1).qgenx= SCled4qgen; %W
 
 SC(26).name = 'Node 26, Solar Panel (X)';
-SC(26).m = 0.053;
+SC(26).m = 0.045;
 SC(26).Cp = 600;
 SC(26).coupling = [1];
 SC(26).qgen=2.4; 
@@ -355,7 +355,7 @@ SC(26).n = [1;0;0];
 %SC(26).qgenx= SCled4qgen; %W
 
 SC(27).name = 'Node 27, Solar Panel (-X)RBF';
-SC(27).m = 0.44;
+SC(27).m = 0.053;
 SC(27).Cp = 600;
 SC(27).coupling = [2];
 SC(27).qgen=2.4; 
@@ -368,7 +368,7 @@ SC(27).n = [-1;0;0];
 %SC(27).qgenx= SCled4qgen; %W
 
 SC(28).name = 'Node 28, Solar Panel (-Z(antenna))';
-SC(28).m = 0.575;
+SC(28).m = 0.0575;
 SC(28).Cp = 600;
 SC(28).coupling = [1, 2 ,5, 6, 22];
 SC(28).qgen=2.4; 
@@ -381,7 +381,7 @@ SC(28).n = [0;0;-1];
 %SC(28).qgenx= SCled4qgen; %W
 
 SC(29).name = 'Node 29, EPS de alta'; 
-SC(29).m = 0.4;
+SC(29).m = 0.04;
 SC(29).Cp = 600; 
 SC(29).A = 0.01; %?
 SC(29).coupling = [3, 4, 5, 6, 8 ,9 ,10, 11]; 
