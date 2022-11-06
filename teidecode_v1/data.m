@@ -13,7 +13,6 @@ sigma = 5.67E-8; %[W/m2/K4]
 Gs0 = 1371; %[W/m2]
 Gp = 237; %[W/m2]
 
-
 %% Orbit
 orb_case = input('Input orbit case to run: ');
 switch orb_case
@@ -87,7 +86,7 @@ ti = (t0:dt:tf).';
 
  %reorientation mode 
   SCreomode = zeros(1,length(ti));
-  SCreomode (1,85800:86400) = 5; %W at day 1 (i whould ask someone about this shit)
+  SCreomode (1,85800:86400) = 5; %W at day 1 (i should ask someone about this shit)
  
 %% Spacecraft data
 A = 0.02; %Areas [m^2]
@@ -404,7 +403,7 @@ SC(29).qgen=0;
 
 % Conductances
  K = zeros(N); %[W/K]
- K(1,3:6)=0.4;
+ K(1,3:6)=0.37;
  K(2,3:6)=0.4;
  K(1,26)=0.8;
  K(2,27)=0.8;

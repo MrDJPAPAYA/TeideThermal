@@ -33,7 +33,7 @@ for k = 1:length(ti)
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
 
             B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen; 
-            K0(i) = SC(i).A*SC(i).e*sigma*Ti(i)^3;
+            K0(i) = SC(i).A*SC(i).e*sigma*Ti(i)^3; %por que estaba a 3 y no ha 4?
             
             if 8<=i<=11; %if the loop is in the leds it shall add the power defined in data
                 B(i)=B(i)+SCledqgen(k);

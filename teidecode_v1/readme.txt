@@ -30,5 +30,4 @@ and stores the results for the last period.
 ## plotter.m
 This scripts calls the solver.m script
 It generates the plots that answer the questions
-for the laboratory report
-and saves them to the Figures folder.
+for the laboratory report.
