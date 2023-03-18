@@ -91,7 +91,7 @@ ti = (t0:dt:tf).';
   
  %% Try to read thy excel
   
-IMMA = readmatrix('Thermal_Data.xlsx')
+%IMMA = readmatrix('Thermal_Data.xlsx')
 opts = detectImportOptions('Thermal_Data.xlsx');
 %opts = xmlImportOptions('Conductances_between_nodes')
 preview('Thermal_Data.xlsx',opts)
@@ -410,6 +410,7 @@ SC(29).qgen=0;
 % K = K.'+K;
 
 % Conductances
+
  K = zeros(N); %[W/K]
  K(1,3:6)=0.37;
  K(2,3:6)=0.4;
