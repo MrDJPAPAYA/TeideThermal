@@ -88,6 +88,14 @@ ti = (t0:dt:tf).';
   SCreomode = zeros(1,length(ti));
   SCreomode (1,85800:86400) = 5; %W at day 1 (i should ask someone about this shit)
  
+  
+ %% Try to read thy excel
+  
+IMMA = readmatrix('Thermal_Data.xlsx')
+opts = detectImportOptions('Thermal_Data.xlsx');
+%opts = xmlImportOptions('Conductances_between_nodes')
+preview('Thermal_Data.xlsx',opts)
+  
 %% Spacecraft data
 A = 0.02; %Areas [m^2]
 W = sqrt(A); %Width [m]
