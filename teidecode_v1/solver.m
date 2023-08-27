@@ -54,7 +54,7 @@ for k = 1:length(ti)
     
     Ti = (D+C)\(D*Ti+B);
     
-    if  ti(k)>T0 %ti(k)>9*T0 %
+    if  ti(k)>T0 %ti(k)>9*T0 % 
         j = j + 1;
         T(:,j) = Ti;
         
