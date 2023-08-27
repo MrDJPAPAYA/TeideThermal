@@ -75,7 +75,7 @@ ti = (t0:dt:tf).';
  %leds power generation
  SCledqgen = zeros(1,length(ti)); 
  %SCledqgen (1,44300:44350)=50; %W
- SCledqgen (1,86400:86410)=50; %W Juanito mi niño como de pedrada es esto? esta bien 
+ SCledqgen (1,86400:86410)=50; %W dato cotejado con juan (aproximacion)
  
  %radio mode, heat applied to trasceiver and antenas?
  SCradiomode = zeros(1,length(ti)); 

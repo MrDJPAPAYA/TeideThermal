@@ -10,7 +10,8 @@ close all;
 %Self notes
 %probar el codigo con un uninodo de un bloque solido a ver si se aproxima
 %al resultado dado
-%corregir parametros deentrada, leerlos desde un excel
+%corregir parametros deentrada, leerlos desde un excel, conseguido con la K
+%falta con el struct
 %% Solve problem
 solver;
 
