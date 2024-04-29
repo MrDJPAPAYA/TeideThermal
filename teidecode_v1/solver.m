@@ -38,7 +38,7 @@ for k = 1:length(ti)
             if 8<=i<=11; %if the loop is in the leds it shall add the power defined in data
                 B(i)=B(i)+SCledqgen(k);
             end
-            if 21<=i<=23; %if the loop is in the Tx-Tx and the module
+            if 21<=i<=23; %if the loop is in the Tx-Rx and the module
                 B(i)=B(i)+SCradiomode(k);
             end  
             if i==20; %if the loop is in Lomo
