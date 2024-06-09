@@ -438,10 +438,6 @@ opts = setvaropts(opts, ["VarName3", "VarName9"], "WhitespaceRule", "preserve");
 opts = setvaropts(opts, ["VarName2", "VarName3", "VarName5", "VarName6", "VarName9"], "EmptyFieldRule", "auto");
 opts = setvaropts(opts, ["VarName4", "VarName7", "VarName8", "VarName10", "VarName11", "VarName12"], "FillValue", 0);
 
-% Import the data
-ThermalData = readtable("C:\Users\erjav\Desktop\TeideThermal\TeideThermal\teidecode_v1\Thermal_Data.xlsx", opts, "UseExcel", false);
-
-ThermalData = table2struct(ThermalData);
 %SC = ThermalData; % THIS DOES NOT WO,RK, COMO IMPORTO LA TABLA A UN Struct
 %% Clear temporary variables
 clear opts
@@ -467,14 +463,16 @@ opts.VariableNames = ["node1", "node2", "node3", "node4", "node5", "node6", "nod
 opts.VariableTypes = ["double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double"];
 
 % Import the data
-ThermalDataS1 = readtable("C:\Users\erjav\Desktop\TeideThermal\TeideThermal\teidecode_v1\Thermal_Data.xlsx", opts, "UseExcel", false);
+ThermalDataS1 = readtable("Thermal_Data.xlsx", 'Sheet',"Conductances_between_nodes");
 
 %% Convert to output type
+ThermalDataS1=ThermalDataS1(1:end,2:end); %Crop text headers
 ThermalDataS1 = table2array(ThermalDataS1);
 
 %% Clear temporary variables
 clear opts
 K = ThermalDataS1;
+
 %{ 
  %K = zeros(N); %[W/K]
  K(1,3:6)=0.37;
