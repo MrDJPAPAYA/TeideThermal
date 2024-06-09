@@ -6,8 +6,7 @@ data;
 %% Solver
 Ti = ones(N,1)*300; %[K]
 %Ti(2) = Tc;
-D = ([SC.m].*[SC.Cp])/dt.*eye(N); %Identity matrix with heat capacities /dt apparently (N sized)
-%Why is D a diagonal matrix and not a vector? Just so we can multiply? 
+D = ([SC.m].*[SC.Cp])/dt*ones(N,1); %Vector with heat capacities/dt (N sized)
 %D(2,2) = 0;
 
 t = find(ti>T0); %find(ti>9*T0); 
@@ -56,10 +55,10 @@ for k = 1:length(ti)
     %C(2,:) = 0; C(2,2) = 1; %Boundary condition/Temperature constraint in node 2
     
     
-    Ti = (D+C)\(D*Ti+B);%WHAT
-    % What is even D+C supposed to be?
+    Ti = Ti+(B-C*Ti)/D;%Update temperature
 
     disp([num2str(k/length(ti)*100),'%']) %Crappy progress bar
+
     if  ti(k)>T0 %ti(k)>9*T0 % 
         j = j + 1;
         T(:,j) = Ti;
