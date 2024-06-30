@@ -27,6 +27,8 @@ switch orb_case
         theta_SC = deg2rad(0); %[rad]
         phi_SC = 0; %[rad]
 end
+
+%All of these are orbital parameters
 ha = 400e3; %[m]
 r = ha + Re; %[m]
 T0 = 2*pi/Re*sqrt(r^3/g); %[s]
