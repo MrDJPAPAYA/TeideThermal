@@ -17,7 +17,8 @@ Q = zeros(N,length(t));
 %% Main calculation Loop
 %Startup
 B = zeros(N,1);
-K0 = zeros(N,1);
+P = zeros(N,1);
+C = -K + eye(N).*sum(K,2); %Proper conductance matrix
 %Loop
 j = 0;
 for k = 1:length(ti)
@@ -37,7 +38,7 @@ for k = 1:length(ti)
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
 
             B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen; %Heat due to albedo and sun (Probably)
-            K0(i) = SC(i).A*SC(i).e*sigma*Ti(i)^3; %por que estaba a 3 y no a 4? Porque es una conductancia radiativa
+            P(i) = SC(i).A*SC(i).e*sigma*Ti(i)^4; %Heat dissipation via radiation
             
             if (8<=i)&&(i<=11) %if the loop is in the leds it shall add the power defined in data
                 B(i)=B(i)+SCledqgen(k);
@@ -50,13 +51,10 @@ for k = 1:length(ti)
             end
         end
     end
+    B = B+P;
     %Lineal heat tranfers ahead
     %B(2) = Tc; %Boundary condition/Temperature constraint in node 2
     %K(4,5) = H45*(Ti(5)^2+Ti(4)^2)*(Ti(5)+Ti(4)); K(5,4) = K(4,5); %Radiative conductances
-    C = -K + eye(N).*(sum(K,2) + K0); %Transforms crappy conductance matrix (K) into proper C so C*T=-deltaQ (vector)
-    %Radiative conductance included... Seems kinda ineficcient to me... To
-    %redefine C on every loop...
-    %Aint it better to add radiation separately like the heat gens? 
     %C(2,:) = 0; C(2,2) = 1; %Boundary condition/Temperature constraint in node 2
     
     
@@ -71,7 +69,7 @@ for k = 1:length(ti)
         
         for i = 1:N
             q(i,:,j) = -K(i,:).*(Ti-Ti(i)).';
-            q(i,i,j) = B(i)*(i~=2) - K0(i)*Ti(i);
+            q(i,i,j) = B(i)*(i~=2) - P(i);
         end
         Q(:,j) = sum(q(:,:,j));
     end
