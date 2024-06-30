@@ -19,6 +19,7 @@ Q = zeros(N,length(t));
 B = zeros(N,1);
 P = zeros(N,1);
 C = -K + eye(N).*sum(K,2); %Proper conductance matrix
+disp("Main loop startup")
 %Loop
 j = 0;
 for k = 1:length(ti)
@@ -51,7 +52,7 @@ for k = 1:length(ti)
             end
         end
     end
-    B = B+P;
+    B = B-P;
     %Lineal heat tranfers ahead
     %B(2) = Tc; %Boundary condition/Temperature constraint in node 2
     %K(4,5) = H45*(Ti(5)^2+Ti(4)^2)*(Ti(5)+Ti(4)); K(5,4) = K(4,5); %Radiative conductances
@@ -59,8 +60,6 @@ for k = 1:length(ti)
     
     
     Ti = Ti+(B-C*Ti)/D;%Update temperature
-
-    disp([num2str(k/length(ti)*100),'%']) %Crappy progress bar
 
     %Tbh I dont know what this is
     if  ti(k)>T0 %ti(k)>9*T0 % 
@@ -74,3 +73,4 @@ for k = 1:length(ti)
         Q(:,j) = sum(q(:,:,j));
     end
 end
+disp("Main loop end")

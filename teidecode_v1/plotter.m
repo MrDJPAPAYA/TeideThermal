@@ -1,21 +1,6 @@
-close all;
-
-%% Thermal Subsytem
-%Property of TEIDESAT
-%Base code created by Leyre Hernández Palacios
-%Modified for TEIDESAT-I by Javier González Vilar
-%contact: teidesat13@ull.edu.es
-
-%%
-%Self notes
-%probar el codigo con un uninodo de un bloque solido a ver si se aproxima
-%al resultado dado
-%corregir parametros deentrada, leerlos desde un excel, conseguido con la K
-%falta con el struct
-%% Solve problem
-solver;
 
 %% Plot results
+disp("Plotting...")
 figdir = ['../Figures/Orb_case' sprintf('%i',orb_case) '_'];
 
 %% Temperature evolution
