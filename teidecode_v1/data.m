@@ -1,4 +1,4 @@
-clc;clear;close all;
+clear;close all;
 set(groot,'DefaultAxesFontSize',11);
 set(groot,'DefaultTextInterpreter','latex');
 
@@ -77,8 +77,9 @@ ti = (t0:dt:tf).';
  %leds power generation
  SCledqgen = zeros(1,length(ti)); 
  %SCledqgen (1,44300:44350)=50; %W
- SCledqgen (1,86400:86410)=50; %W dato cotejado con juan (aproximacion)
- 
+ %SCledqgen (1,86400:86410)=50; %W dato cotejado con juan (aproximacion)
+ SCledqgen (1,1:length(ti))=3; %W for stationary tests
+
  %radio mode, heat applied to trasceiver and antenas?
  SCradiomode = zeros(1,length(ti)); 
  SCradiomode (1,25200:25500) = 5; %W at day 1 supuestos

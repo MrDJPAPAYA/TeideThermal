@@ -16,8 +16,7 @@ Q = zeros(N,length(t));
 
 %% Main calculation Loop
 %Startup
-B = zeros(N,1);
-P = zeros(N,1);
+
 C = -K + eye(N).*sum(K,2); %Proper conductance matrix
 disp("Main loop startup")
 %Loop
@@ -30,7 +29,8 @@ for k = 1:length(ti)
     Gs = Gs0*(~eclipse_flag(gamma));
     beta = beta_f(gamma);
     F = albedo_F_f(beta);
-
+    B = zeros(N,1);
+    P = zeros(N,1);
     %Boundary conditions
     for i = 1:N
                        
@@ -39,7 +39,7 @@ for k = 1:length(ti)
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
 
             B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen; %Heat due to albedo and sun (Probably)
-            P(i) = SC(i).A*SC(i).e*sigma*Ti(i)^4; %Heat dissipation via radiation
+            P(i) = SC(i).A*SC(i).e*sigma*(Ti(i)^4-(0)^4); %Heat dissipation via radiation
             
             if (8<=i)&&(i<=11) %if the loop is in the leds it shall add the power defined in data
                 B(i)=B(i)+SCledqgen(k);
