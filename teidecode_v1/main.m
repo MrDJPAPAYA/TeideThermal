@@ -1,4 +1,4 @@
-close all;
+close all; clear
 
 %% Thermal Subsytem
 %Property of TEIDESAT
@@ -13,9 +13,6 @@ close all;
 %corregir parametros deentrada, leerlos desde un excel, conseguido con la K
 %falta con el struct
 
-%% Path Config
-path = "../saves/";
-
 
 %% Load or solve
 action = input("Choose action (load/solve): ", "s");
@@ -26,9 +23,11 @@ if action == "solve"
 solver;
 %Save data
 if input("Save data? (y/n): ", "s")== "y"
-    data = {N, T, T0, t};
+    %data = {N, T, T0, t};
+    path = "../saves/"; %Folder location
     filename = input("Save as: ", "s");
-    save(append(path,filename), "data")
+    filepath = fullfile(path,filename);
+    save(filepath)
 end
 %Plot data
 plotter;
@@ -36,13 +35,16 @@ end
 %% Load data and plot
 if action == "load"
     %Load and unpack
+    path = "../saves/"; %Folder location
     filename = input("Enter file name: ", "s");
-    if isfile(append(path,filename,".mat"))
-    load(append(path,filename), 'data');
-    N = data{1};
-    T = data{2};
-    T0 = data{3};
-    t = data{4};
+    filename = append(filename, ".mat");
+    filepath = fullfile(path,filename);
+    if isfile(filepath)
+    load(filepath);
+    %N = data{1};
+    %T = data{2};
+    %T0 = data{3};
+    %t = data{4};
     %plot
     plotter;
     %If file couldnt be found
