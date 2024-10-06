@@ -39,16 +39,16 @@ for k = 1:length(ti)
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
 
             B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen; %Heat due to albedo and sun (Probably)
-            P(i) = SC(i).A*SC(i).e*sigma*(Ti(i)^4-(0)^4); %Heat dissipation via radiation
+            P(i) = SC(i).A*SC(i).e*sigma*(Ti(i)^4-(333.15)^4); %Heat dissipation via radiation
             
             if (8<=i)&&(i<=11) %if the loop is in the leds it shall add the power defined in data
-                B(i)=B(i)+SCledqgen(k);
+               B(i)=B(i)+SCledqgen(k);
             end
             if (21<=i)&&(i<=23) %if the loop is in the Tx-Tx and the module
-                B(i)=B(i)+SCradiomode(k);
+               B(i)=B(i)+SCradiomode(k);
             end  
             if i==20 %if the loop is in Lomo
-                B(i)=B(i)+SCradiomode(k);
+               B(i)=B(i)+SCradiomode(k);
             end
         end
     end
@@ -61,16 +61,16 @@ for k = 1:length(ti)
     
     Ti = Ti+(B-C*Ti)/D;%Update temperature
 
-    %Tbh I dont know what this is
-    if  ti(k)>T0 %ti(k)>9*T0 % 
+    %Records stuff for later usage
+    if  ti(k)>T0 %ti(k)>9*T0 % %Set to record data, when sim time is greater than x number of orbits
         j = j + 1;
-        T(:,j) = Ti;
+        T(:,j) = Ti; %Records temperatures in big matrix
         
-        for i = 1:N
+        for i = 1:N %For every node
             q(i,:,j) = -K(i,:).*(Ti-Ti(i)).';
             q(i,i,j) = B(i)*(i~=2) - P(i);
         end
-        Q(:,j) = sum(q(:,:,j));
+        Q(:,j) = sum(q(:,:,j)); %Definetly creates something related to heat... Maybe I wrote this line myself and now can't rememberwhat it does?
     end
 end
 disp("Main loop end")
