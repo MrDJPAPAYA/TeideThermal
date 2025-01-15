@@ -6,9 +6,15 @@ figdir = ['../Figures/Orb_case' sprintf('%i',orb_case) '_'];
 %% Temperature evolution
 figure(1);
 colours = lines(N);
-markers = {'-o','-s','-d','-v','-^','->','-<','-x','-*','-o','-*','-o','->','-o','-s','-d','-v','-x','-*','-o','-*','-o','-s','-d','-v','-^','->','-<','-x'};
+markers = {'-o','-s','-d','-v','-^','->','-<','-x','-*','-p'};
+j = 1;
 for i=1:N
-    p = plot((t-t(1))/T0,T(i,:)-273.15,markers{i},'Color',colours(i,:),'LineWidth',0.6);
+    %Ensures unique marker and color combination for each node.
+    if mod(i,7) == 0 %Seven colors in the lines colormap
+        j = j+1;
+    end
+    %plots temperatures evolution
+    p = plot((t-t(1))/T0,T(i,:)-273.15,markers{j},'Color',colours(i,:),'LineWidth',0.6);
     p.MarkerIndices = 1:500:length(t);
     hold on;
 end
@@ -19,7 +25,7 @@ grid on; grid minor;
 set(gcf,'Position',[488.2000  296.2000  844.8000  465.6000]);
 title(['Temperature evolution' newline' '$\theta_{sc} = ' ...
     sprintf('%.0f',rad2deg(theta_SC)) '^{\circ}$ and $\phi_{sc} = ' ...
-    sprintf('%.0f',rad2deg(phi_SC)) '^{\circ}$']);
+    sprintf('%.0f',rad2deg(phi_SC)) '^{\circ}$'], 'Interpreter','latex');
 %saveas(gcf,[figdir 'Tev' '.png']);
 
 %% Maximum temperature
