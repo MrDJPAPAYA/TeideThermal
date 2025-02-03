@@ -9,7 +9,7 @@ Ti = ones(N,1)*300; %[K]
 D = ([SC.m].*[SC.Cp])/dt*ones(N,1); %Vector with heat capacities/dt (N sized)
 %D(2,2) = 0;
 
-t = find(ti>T0); %find(ti>9*T0); 
+t = find(ti>0); %find(ti>9*T0); 
 T = zeros(N,length(t));
 q = zeros(N,N,length(t));
 Q = zeros(N,length(t));
@@ -21,6 +21,8 @@ C = -K + eye(N).*sum(K,2); %Proper conductance matrix
 disp("Main loop startup")
 %Loop
 j = 0;
+m = 1; %Keeps track of the current mode
+changetime = Mode(1).time; %Time at wich it will change mode.
 for k = 1:length(ti)
     %Parameter calculation
     gamma = gamma_f(ti(k));
@@ -34,24 +36,20 @@ for k = 1:length(ti)
     %Boundary conditions
     for i = 1:N
                        
-        if ismember(0,SC(i).coupling) %External loads
+        if SC(i).radiates %External loads
             cos_s = us.'*SC(i).n; cos_s = cos_s*(cos_s>0);
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
 
-            B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp) + SC(i).qgen; %Heat due to albedo and sun (Probably)
-            P(i) = SC(i).A*SC(i).e*sigma*(Ti(i)^4-(333.15)^4); %Heat dissipation via radiation
-            
-            if (8<=i)&&(i<=11) %if the loop is in the leds it shall add the power defined in data
-               B(i)=B(i)+SCledqgen(k);
-            end
-            if (21<=i)&&(i<=23) %if the loop is in the Tx-Tx and the module
-               B(i)=B(i)+SCradiomode(k);
-            end  
-            if i==20 %if the loop is in Lomo
-               B(i)=B(i)+SCradiomode(k);
-            end
+            B(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp); %Heat due to albedo and sun
+            P(i) = SC(i).A*SC(i).e*sigma*(Ti(i)^4-(0)^4); %Heat dissipation via radiation
         end
     end
+    if k > changetime % Changes mode when time is due and defines new time
+        m = m + 1;
+        changetime = Mode(m).time;
+    end
+
+    B = B + Mode(m).heats(:, :);
     B = B-P;
     %Lineal heat tranfers ahead
     %B(2) = Tc; %Boundary condition/Temperature constraint in node 2
@@ -62,7 +60,7 @@ for k = 1:length(ti)
     Ti = Ti+(B-C*Ti)/D;%Update temperature
 
     %Records stuff for later usage
-    if  ti(k)>T0 %ti(k)>9*T0 % %Set to record data, when sim time is greater than x number of orbits
+    if  ti(k)>0 %ti(k)>9*T0 % %Set to record data, when sim time is greater than x number of orbits
         j = j + 1;
         T(:,j) = Ti; %Records temperatures in big matrix
         

@@ -31,9 +31,8 @@ if input("Save data? (y/n): ", "s")== "y"
 end
 %Plot data
 plotter;
-end
 %% Load data and plot
-if action == "load"
+elseif action == "load"
     %Load and unpack
     path = "../saves/"; %Folder location
     filename = input("Enter file name: ", "s");
