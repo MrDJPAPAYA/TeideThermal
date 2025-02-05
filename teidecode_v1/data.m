@@ -121,18 +121,27 @@ for i = 1:size(temp.ModesNames, 2)
     Mode(i).heats = temp.ModesHeats(1:end, i);
 end
 
-clear temp % Clear all temporary variables
+
 
 %% Solver config
 %these parameters will define the duration fo the simulation, if tf=10*T0
 %the simulation will run for 10 orbits
-
-dt = 1; %[s]
+% Read Startup conditions
+temp.SolverConfig = readtable("Thermal_Data.xlsx", 'Sheet',"Startup Parameters");
+temp.SolverConfig = table2array(temp.SolverConfig);
+config = struct('SolRad', [], 'EnvRad', []);
+config.SolRad =  temp.SolverConfig(1, 1);
+config.EnvRad =  temp.SolverConfig(1, 2);
+EnvT =  temp.SolverConfig(1, 3);
+InitialT =  temp.SolverConfig(1, 4);
+dt = temp.SolverConfig(1, 5); %[s]
 t0 = 0;
 %tf = 10*T0; %T0*77.85; %5 days, with 15,57 orbits per day aproximately
 %tf = 432000; %time to complete five days
 tf = Mode(end).time-1;
 ti = (t0:dt:tf).';
+
+clear temp % Clear all temporary variables
 
  %leds power generation
  SCledqgen = zeros(1,length(ti)); 
