@@ -49,7 +49,7 @@ for k = 1:length(ti)
         changetime = Mode(m).time;
     end
 
-    B = B + Mode(m).heats(:, :);
+    B = B + Mode(m).heats(:, :); % Add Heat generation
     B = B-P;
     %Lineal heat tranfers ahead
     %B(2) = Tc; %Boundary condition/Temperature constraint in node 2

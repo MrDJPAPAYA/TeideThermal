@@ -74,53 +74,54 @@ W = sqrt(A); %Width [m]
 
 %structure nodes 
 % Import the data
-NodesData = readtable("Thermal_Data.xlsx", 'Sheet',"Nodes thermal properties");
+temp.NodesData = readtable("Thermal_Data.xlsx", 'Sheet',"Nodes thermal properties");
 
 % Convert to output type
-NodesNames = NodesData{ :, 1};
-NodesData = NodesData(1:end,2:end); %Crop text header column
-NodesData = table2array(NodesData);
+temp.NodesNames = temp.NodesData{ :, 1};
+temp.NodesData = temp.NodesData(1:end,2:end); %Crop text header column
+temp.NodesData = table2array(temp.NodesData);
 
 % Assign into struct element and save number
 
-N = size(NodesData, 1);
+N = size(temp.NodesData, 1);
 
 SC = struct('name', [], 'm', [], 'Cp', [], 'k', [], 'A', [], 'e', [], 'a', [], 'n', [], 'radiates', []);
 
 for i = 1:N
-    SC(i).name = NodesNames{i, 1}; % Name
-    SC(i).m = NodesData(i, 1); % Mass
-    SC(i).Cp = NodesData(i, 2); % Specific Heat
-    SC(i).k = NodesData(i, 3); % Conductivity
-    SC(i).A = NodesData(i, 4); % Area
-    SC(i).e = NodesData(i, 5); % Emissivity
-    SC(i).a = NodesData(i, 6); % Absorptivity
-    SC(i).n = [NodesData(i, 7); NodesData(i, 8); NodesData(i, 9)]; % Normal vector to surface
-    SC(i).radiates = NodesData(i, 10);
+    SC(i).name = temp.NodesNames{i, 1}; % Name
+    SC(i).m = temp.NodesData(i, 1); % Mass
+    SC(i).Cp = temp.NodesData(i, 2); % Specific Heat
+    SC(i).k = temp.NodesData(i, 3); % Conductivity
+    SC(i).A = temp.NodesData(i, 4); % Area
+    SC(i).e = temp.NodesData(i, 5); % Emissivity
+    SC(i).a = temp.NodesData(i, 6); % Absorptivity
+    SC(i).n = [temp.NodesData(i, 7); temp.NodesData(i, 8); temp.NodesData(i, 9)]; % Normal vector to surface
+    SC(i).radiates = temp.NodesData(i, 10);
 end
 
 %% Operation Conditions
 
 % Read Operation modes settings
-    ModesOp = readtable("Thermal_Data.xlsx", 'Sheet',"Operation");
-    ModesTimes = ModesOp(1, 3:end);
-    ModesTimes = table2array(ModesTimes);
-    ModesHeats = ModesOp(6:end, 3:end);
-    ModesHeats = table2array(ModesHeats);
-    ModesNames = ModesOp.Properties.VariableNames; 
-    ModesNames = ModesNames(1, 3:end);
+    temp.ModesOp = readtable("Thermal_Data.xlsx", 'Sheet',"Operation");
+    temp.ModesTimes = temp.ModesOp(1, 3:end);
+    temp.ModesTimes = table2array(temp.ModesTimes);
+    temp.ModesHeats = temp.ModesOp(6:end, 3:end);
+    temp.ModesHeats = table2array(temp.ModesHeats);
+    temp.ModesNames = temp.ModesOp.Properties.VariableNames; 
+    temp.ModesNames = temp.ModesNames(1, 3:end);
 Mode = struct('name', [], 'time', [], 'heats', []);
 
-if size(ModesHeats, 1) ~= N
+if size(temp.ModesHeats, 1) ~= N
 error("Node properties and number of nodes per operation mode have different sizes. Check data")
 end 
 
-for i = 1:size(ModesNames, 2)
-    Mode(i).name = ModesNames{1, i};
-    Mode(i).time = ModesTimes(1, i);
-    Mode(i).heats = ModesHeats(1:end, i);
+for i = 1:size(temp.ModesNames, 2)
+    Mode(i).name = temp.ModesNames{1, i};
+    Mode(i).time = temp.ModesTimes(1, i);
+    Mode(i).heats = temp.ModesHeats(1:end, i);
 end
 
+clear temp % Clear all temporary variables
 
 %% Solver config
 %these parameters will define the duration fo the simulation, if tf=10*T0
