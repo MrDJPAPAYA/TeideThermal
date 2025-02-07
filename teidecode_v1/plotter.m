@@ -1,5 +1,5 @@
 
-%% Plot results
+%% Plot resultsT
 disp("Plotting...")
 figdir = ['../Figures/Orb_case' sprintf('%i',orb_case) '_'];
 
@@ -14,13 +14,13 @@ for i=1:N
         j = j+1;
     end
     %plots temperatures evolution
-    p = plot((t-t(1))/T0,T(i,:)-273.15,markers{j},'Color',colours(i,:),'LineWidth',0.6);
+    p = plot((t-t(1))/T0,Results.T(i,:)-273.15,markers{j},'Color',colours(i,:),'LineWidth',0.6);
     p.MarkerIndices = 1:500:length(t);
     hold on;
 end
 legend({SC.name},'Interpreter','latex','Location','eastoutside');
 xlabel('$t/T_0$');
-ylabel('T [$^{\circ}C$]');
+ylabel('Results.T [$^{\circ}C$]');
 grid on; grid minor;
 set(gcf,'Position',[488.2000  296.2000  844.8000  465.6000]);
 title(['Temperature evolution' newline' '$\theta_{sc} = ' ...
@@ -29,18 +29,18 @@ title(['Temperature evolution' newline' '$\theta_{sc} = ' ...
 %saveas(gcf,[figdir 'Tev' '.png']);
 
 %% Maximum temperature
-Tmax = max(T,[],'all');
-[n_Tmax, t_Tmax] = find(T==Tmax);
+Tmax = max(Results.T,[],'all');
+[n_Tmax, t_Tmax] = find(Results.T==Tmax);
 t_Tmax = t(t_Tmax);
 
 hold on;
 plot((t_Tmax-t(1))/T0,Tmax-273.15,'ro','HandleVisibility','off');
 
-text((t_Tmax(1)-t(1))/T0+0.17,Tmax-290,...
-    ['Maximum temperature: $' sprintf('%0.2f', Tmax-273.15) '^{\circ}C$' ...
-    newline 'found at node ' sprintf('%i', n_Tmax') ', ' SC(n_Tmax).name ',' ...
-    newline 'and orbit angle $\gamma = ' ...
-    sprintf('%0.2f', rad2deg(mod(gamma_f(t_Tmax),2*pi))) '^{\circ}$.']);
+%text((t_Tmax(1)-t(1))/T0+0.17,Tmax-290,...
+%    ['Maximum temperature: $' sprintf('%0.2f', Tmax-273.15) '^{\circ}C$' ...
+%    newline 'found at node ' sprintf('%i', n_Tmax') ', ' SC(n_Tmax).name ',' ...
+%    newline 'and orbit angle $\gamma = ' ...
+%    sprintf('%0.2f', rad2deg(mod(gamma_f(t_Tmax),2*pi))) '^{\circ}$.']);
 
 %saveas(gcf,[figdir 'Tmax' '.png']);
 
@@ -51,7 +51,7 @@ text((t_Tmax(1)-t(1))/T0+0.17,Tmax-290,...
 % xtl = {'$0$', '$\pi/2$', '$\pi$', '$3\pi/2$', '$2\pi$'};
 % for i = 1:N
 %     if ismember(0,SC(i).coupling)
-%         p = plot(wrapTo2Pi(gamma_f(t(1:end-1))),T(i,1:end-1),markers{i},'Color',colours(i,:),'LineWidth',0.6);
+%         p = plot(wrapTo2Pi(gamma_f(t(1:end-1))),Results.T(i,1:end-1),markers{i},'Color',colours(i,:),'LineWidth',0.6);
 %         j = [j i];
 %         p.MarkerIndices = round(linspace(1,length(t)-1,length(xt)));
 %         hold on;
@@ -59,7 +59,7 @@ text((t_Tmax(1)-t(1))/T0+0.17,Tmax-290,...
 %     legend({SC(j).name},'Interpreter','latex','Location','eastoutside');
 % end
 % xlabel('$\gamma$ [rad]');
-% ylabel('T [K]');
+% ylabel('Results.T [K]');
 % grid on; grid minor;
 % set(gcf,'Position',[488.2000  296.2000  844.8000  465.6000]);
 % ax = gca;
@@ -79,7 +79,7 @@ text((t_Tmax(1)-t(1))/T0+0.17,Tmax-290,...
 %     up = up_f(theta_SC,phi_SC);
 %     us = us_f(xt(k-3),up);
 %     figure(k);
-%     Sat3DnodeT_v1_f(W,L,SC(5).L,T(:,i),us,up);
+%     Sat3DnodeT_v1_f(W,L,SC(5).L,Results.T(:,i),us,up);
 %     sgtitle(['Outer temperature distribution for $\gamma$=' xtl{k-3} ...
 %         newline '$\theta_{sc} = ' sprintf('%.0f',rad2deg(theta_SC)) ...
 %         '^{\circ}$ and $\phi_{sc} = ' sprintf('%.0f',rad2deg(phi_SC)) '^{\circ}$'],...
@@ -91,7 +91,7 @@ text((t_Tmax(1)-t(1))/T0+0.17,Tmax-290,...
 
 %% Repeat?
 % switch input('Run another case? ','s')
-%     case {'1', 'y', 'Y', 'yes', 'Yes', 'Sure!', 'true', 'T', 'True'}
+%     case {'1', 'y', 'Y', 'yes', 'Yes', 'Sure!', 'true', 'Results.T', 'True'}
 %         plotter;
 %     otherwise
 %         if input('Close plots? ')

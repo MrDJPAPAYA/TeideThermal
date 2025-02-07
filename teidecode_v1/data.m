@@ -118,7 +118,7 @@ end
 for i = 1:size(temp.ModesNames, 2)
     Mode(i).name = temp.ModesNames{1, i};
     Mode(i).time = temp.ModesTimes(1, i);
-    Mode(i).heats = temp.ModesHeats(1:end, i);
+    Mode(i).HeatGen = temp.ModesHeats(1:end, i);
 end
 
 
