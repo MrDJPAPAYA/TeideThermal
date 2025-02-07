@@ -1,8 +1,5 @@
 %% Thermal Subsytem
 
-%% Load data
-data;
-
 %% Solver
 Ti = ones(N,1)*InitialT; %[K] Define starting temperature
 %Ti(2) = Tc;
@@ -58,7 +55,7 @@ for k = 1:length(ti)
         end
     end
 
-    if k > changetime % Changes mode when time is due and defines new time
+    while k > changetime % Changes mode when time is due and defines new time
         m = m + 1;
         changetime = Mode(m).time;
     end
