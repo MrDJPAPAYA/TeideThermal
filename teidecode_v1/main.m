@@ -26,34 +26,6 @@ solver;
 %Plot data
 plotter;
 
-%Save data
-SaveVar = [0, 0];
-if input("Save data as mathlab file? (y/n): ", "s")== "y"
-    SaveVar(1) = 1;
-end
-if input("Save data as excel file? (y/n): ", "s")== "y"
-    SaveVar(2) = 1;
-end
-if any(SaveVar)
-path = "../saves/"; %Folder location
-    filename = input("Save as: ", "s");
-    filepath = fullfile(path,filename);
-end
-if SaveVar(1)
-   save(filepath)
-end
-if SaveVar(2)
-   SaveResultsToExcel(filepath, 'Temperatures', Results.t, Results.T, {SC.name});
-   SaveResultsToExcel(filepath, 'Net heat transfer', Results.t, Results.NetCond, {SC.name});
-   SaveResultsToExcel(filepath, 'Heat generation', Results.t, Results.HeatGen, {SC.name});
-   if config.SolRad
-       SaveResultsToExcel(filepath, 'Heat by sun and albedo', Results.t, Results.SunRad, {SC.name});
-   end
-   if config.EnvRad
-       SaveResultsToExcel(filepath, 'Heat radiated', Results.t, Results.EnvRad, {SC.name});
-   end
-end
-
 %% Load data and plot
 elseif action == "load"
     %Load and unpack
@@ -88,6 +60,7 @@ if SaveVar(1)
    save(filepath)
 end
 if SaveVar(2)
+   disp("Saving on excel... Please, don't open the file yet to avoid errors.")
    SaveResultsToExcel(filepath, 'Temperatures', Results.t, Results.T, {SC.name});
    SaveResultsToExcel(filepath, 'Net heat transfer', Results.t, Results.NetCond, {SC.name});
    SaveResultsToExcel(filepath, 'Heat generation', Results.t, Results.HeatGen, {SC.name});
@@ -97,6 +70,7 @@ if SaveVar(2)
    if config.EnvRad
        SaveResultsToExcel(filepath, 'Heat radiated', Results.t, Results.EnvRad, {SC.name});
    end
+   disp("Done saving!")
 end
 
 % Save to excel function
