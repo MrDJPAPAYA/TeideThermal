@@ -31,12 +31,17 @@ m = 1; %Keeps track of the current mode
 changetime = Mode(1).time; %Time at which it will change mode.
 for k = 1:length(ti)
     %Parameter calculation
-    gamma = gamma_f(ti(k));
-    up = up_f(theta_SC,phi_SC);
-    us = us_f(gamma,up);
-    Gs = Gs0*(~eclipse_flag(gamma));
-    beta = beta_f(gamma);
-    F = albedo_F_f(beta);
+    %gamma = nu_delta(ti(k));
+    %up = up_f(theta_SC,phi_SC);
+    %us = us_f(gamma,up);
+    %Gs = Gs0*(~eclipse_flag(gamma));
+    %beta = beta_f(gamma);
+    nu = nu_f(ti(k)); % Current anomaly
+    Rnu = R.nu_f(nu); % Anomaly rotation matrix
+    Rpos = R.pos_f(Rnu); % Position rotation matrix
+    us = us_f(Rpos); % Sun pointing vector
+    Gs = Gs0*(~eclipse_flag(us)); % Solar radiation if not on eclipse
+    F = albedo_F_f(acos(cosbeta_f(us))); % Visibility factor
     %Boundary conditions
     SolRad = zeros(N,1); % Radiation from the Sun and Earth
     EnvRad = zeros(N,1); % Radiation dissipated to the enviroment
@@ -47,6 +52,7 @@ for k = 1:length(ti)
             cos_s = us.'*SC(i).n; cos_s = cos_s*(cos_s>0);
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
             SolRad(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp); % Heat due to albedo and sun
+            %SolRad(i) = SC(i).A*(SC(i).e*cos_p*Gp); % Heat due to albedo
             end
 
             if config.EnvRad

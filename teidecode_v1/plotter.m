@@ -1,7 +1,7 @@
 
 %% Plot resultsT
 disp("Plotting...")
-figdir = ['../Figures/Orb_case' sprintf('%i',orb_case) '_'];
+figdir = ['../Figures/Orb_case' sprintf('%i', 0 ) '_'];
 
 %% Temperature evolution
 figure(1);
@@ -24,8 +24,8 @@ ylabel('Results.T [$^{\circ}C$]');
 grid on; grid minor;
 set(gcf,'Position',[488.2000  296.2000  844.8000  465.6000]);
 title(['Temperature evolution' newline' '$\theta_{sc} = ' ...
-    sprintf('%.0f',rad2deg(theta_SC)) '^{\circ}$ and $\phi_{sc} = ' ...
-    sprintf('%.0f',rad2deg(phi_SC)) '^{\circ}$'], 'Interpreter','latex');
+    sprintf('%.0f',rad2deg(Att.pitch)) '^{\circ}$ and $\phi_{sc} = ' ...
+    sprintf('%.0f',rad2deg(Att.roll)) '^{\circ}$'], 'Interpreter','latex');
 %saveas(gcf,[figdir 'Tev' '.png']);
 
 %% Maximum temperature

@@ -6,40 +6,79 @@ set(groot,'DefaultTextInterpreter','latex');
 
 %% Constants
 Tc = 32+273.15; %[K]
-Re = 6371e3; %[m]
+Re = 6371e3; % Earth radius [m]
 g = 9.81; %[m/s2]
 a = 0.4; %Earth albedo
 sigma = 5.67E-8; %[W/m2/K4]
 Gs0 = 1371; %[W/m2]
-Gp = 237; %[W/m2]
+Gp = 237; %[W/m2] Value at surface. Could adjust this for distance on cold critical cases.
+
+%% Orbit and orientation
+temp.orbit_params = readtable("Thermal_Data.xlsx", 'Sheet',"Orbital Parameters", VariableNamingRule="preserve");
+temp.orbit_params = table2array(temp.orbit_params);
+
+% Attitude parameters [rad]
+Att.yaw = deg2rad(temp.orbit_params(1, 1)); 
+Att.pitch = deg2rad(temp.orbit_params(1, 2));
+Att.roll = deg2rad(temp.orbit_params(1, 3));
+
+% Orbital parameters
+Orb.omega = deg2rad(temp.orbit_params(1, 4)); % Longitude of Ascending node[rad] 
+Orb.i = deg2rad(temp.orbit_params(1, 5)); % Inclination [rad]
+Orb.radi = Re + 1000*temp.orbit_params(1, 6); % Radius[m]
+T0 = 2*pi/Re*sqrt(Orb.radi^3/g); % Orbital period [s] 
+Orb.n = 2*pi/T0; %Angular speed/mean motion [rad/s]
+Orb.nu0 = 0; % Starting anomaly [rad] 
+nu_f = @(t) Orb.nu0 + Orb.n*t; % True anomaly function [rad]
+
+% Rotation matrices
+R.yaw = Rmatrix(3, -Att.yaw);
+R.pitch = Rmatrix(2, -Att.pitch);
+R.roll = Rmatrix(1, -Att.roll);
+R.Att = R.yaw*R.pitch*R.roll; % Attitude rotation matrix
+R.omega = Rmatrix(2, Orb.omega);
+R.i = Rmatrix(3, Orb.i);
+R.Orb = R.omega*R.i; % Orbital rotation matrix
+R.nu_f = @(nu) Rmatrix(2, nu); % Mean anomaly rotation matrix function
+R.pos_f = @(Rnu) R.Orb*Rnu; % Position rotation matrix (effect of orbit+anomaly)
+
+% Alignment vectors
+up = R.Att*[0; 0; 1]; % Earth pointing vector
+us_f = @(Rpos) Rpos*R.Att*[0; 0; -1]; % Sun pointing vector
+
+% Eclipse flag 
+cosbeta_f = @(us) dot(up, us); % beta is the angle between the sun and earth pointing vectors
+cosdelta = sqrt(1-Re^2/Orb.radi^2); % delta is the max value of beta while on eclipse
+eclipse_flag = @(us) dot(up,us)>cosdelta;
+
 
 %% Orbit
-orb_case = input('Input orbit case to run: ');
-switch orb_case
-    case 1
-        theta_SC = deg2rad(0); %[rad]
-        phi_SC = 0; %[rad]
-    case 2
-        theta_SC = deg2rad(45); %[rad]
-        phi_SC = 0; %[rad]
-    otherwise
-        orb_case = 1;
-        theta_SC = deg2rad(0); %[rad]
-        phi_SC = 0; %[rad]
-end
+%orb_case = input('Input orbit case to run: ');
+%switch orb_case
+%    case 1
+%        theta_SC = deg2rad(0); %[rad]
+%        phi_SC = 0; %[rad]
+%    case 2
+%        theta_SC = deg2rad(45); %[rad]
+%        phi_SC = 0; %[rad]
+%    otherwise
+%        orb_case = 1;
+%        theta_SC = deg2rad(0); %[rad]
+%        phi_SC = 0; %[rad]
+%end
 
 %All of these are orbital parameters
-ha = 400e3; %[m]
-r = ha + Re; %[m]
-T0 = 2*pi/Re*sqrt(r^3/g); %[s]
-omega0 = 2*pi/T0; %[rad/s]
-gamma0 = 0; %[rad]
-gamma_f = @(t) gamma0 + 2*pi/T0.*t; %[rad]
-beta_f = @(gamma) abs(wrapToPi(gamma)); %[rad]
-up_f = @(theta,phi) -[sin(theta)*cos(phi); sin(theta)*sin(phi); cos(theta)];
-us_f = @(gamma,up) Rmatrix(2,theta_SC).'*[-sin(gamma); 0; cos(gamma)];
-delta = acos(Re/r);
-eclipse_flag = @(gamma) (pi-abs(wrapToPi(gamma)))<delta;
+%ha = 400e3; %[m]
+%r = ha + Re; %[m]
+%T0 = 2*pi/Re*sqrt(r^3/g); %[s]
+%omega0 = 2*pi/T0; %[rad/s]
+%gamma0 = 0; %[rad]
+%gamma_f = @(t) gamma0 + 2*pi/T0.*t; %[rad]
+%beta_f = @(gamma) abs(wrapToPi(gamma)); %[rad]
+%up_f = @(theta,phi) [-sin(theta)*cos(phi); sin(theta)*sin(phi); cos(theta)];
+%us_f = @(gamma,up) Rmatrix(2,theta_SC).'*[-sin(gamma); 0; cos(gamma)];
+%delta = acos(Re/r);
+%eclipse_flag = @(gamma) (pi-abs(wrapToPi(gamma)))<delta;
 
 
 
@@ -74,7 +113,7 @@ W = sqrt(A); %Width [m]
 
 %structure nodes 
 % Import the data
-temp.NodesData = readtable("Thermal_Data.xlsx", 'Sheet',"Nodes thermal properties");
+temp.NodesData = readtable("Thermal_Data.xlsx", 'Sheet',"Nodes thermal properties", VariableNamingRule="preserve");
 
 % Convert to output type
 temp.NodesNames = temp.NodesData{ :, 1};
@@ -96,7 +135,7 @@ for i = 1:N
     SC(i).e = temp.NodesData(i, 5); % Emissivity
     SC(i).a = temp.NodesData(i, 6); % Absorptivity
     SC(i).n = [temp.NodesData(i, 7); temp.NodesData(i, 8); temp.NodesData(i, 9)]; % Normal vector to surface
-    SC(i).radiates = temp.NodesData(i, 10);
+    SC(i).radiates = temp.NodesData(i, 10); % Boolean to see if it radiates
 end
 
 %% Operation Conditions
@@ -127,7 +166,7 @@ end
 %these parameters will define the duration fo the simulation, if tf=10*T0
 %the simulation will run for 10 orbits
 % Read Startup conditions
-temp.SolverConfig = readtable("Thermal_Data.xlsx", 'Sheet',"Startup Parameters");
+temp.SolverConfig = readtable("Thermal_Data.xlsx", 'Sheet',"Startup Parameters", VariableNamingRule="preserve");
 temp.SolverConfig = table2array(temp.SolverConfig);
 config = struct('SolRad', [], 'EnvRad', []);
 config.SolRad =  temp.SolverConfig(1, 1);
@@ -227,7 +266,7 @@ clear opts
 %opts.VariableTypes = ["double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double"];
 
 % Import the data
-ThermalDataS1 = readtable("Thermal_Data.xlsx", 'Sheet',"Conductances_between_nodes");
+ThermalDataS1 = readtable("Thermal_Data.xlsx", 'Sheet',"Conductances_between_nodes", VariableNamingRule="preserve");
 
 % Convert to output type
 ThermalDataS1 = ThermalDataS1(1:end,2:end); %Crop text headers
@@ -275,7 +314,7 @@ function [R] = Rmatrix(raxis,rangle)
     R = zeros(3,3);
     S = sin(rangle);
     C = cos(rangle);
-    A = [C,S;-S,C];
+    A = [C,-S;S,C];
     if raxis == 2
         A = A.';
     end
