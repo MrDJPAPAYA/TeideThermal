@@ -30,24 +30,20 @@ j = 0; % Keeps track of the position in the result matrixes.
 m = 1; %Keeps track of the current mode
 changetime = Mode(1).time; %Time at which it will change mode.
 for k = 1:length(ti)
+
     %Parameter calculation
-    %gamma = nu_delta(ti(k));
-    %up = up_f(theta_SC,phi_SC);
-    %us = us_f(gamma,up);
-    %Gs = Gs0*(~eclipse_flag(gamma));
-    %beta = beta_f(gamma);
     nu = nu_f(ti(k)); % Current anomaly
     Rnu = R.nu_f(nu); % Anomaly rotation matrix
     Rpos = R.pos_f(Rnu); % Position rotation matrix
     us = us_f(Rpos); % Sun pointing vector
     Gs = Gs0*(~eclipse_flag(us)); % Solar radiation if not on eclipse
     F = albedo_F_f(acos(cosbeta_f(us))); % Visibility factor
+
     %Boundary conditions
     SolRad = zeros(N,1); % Radiation from the Sun and Earth
     EnvRad = zeros(N,1); % Radiation dissipated to the enviroment
     for i = 1:N           
         if SC(i).radiates %External loads
-
             if config.SolRad
             cos_s = us.'*SC(i).n; cos_s = cos_s*(cos_s>0);
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
@@ -74,7 +70,7 @@ for k = 1:length(ti)
     % Update temperature
     Ti = Ti+(B + NetCond)/D;
 
-    %Records stuff for later usage
+    %Records data for later usage
     if  ti(k)>0 %ti(k)>9*T0 % % Set to record data, when sim time is greater than x number of orbits
         j = j + 1;
         T(:,j) = Ti; 

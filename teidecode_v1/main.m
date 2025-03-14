@@ -4,15 +4,8 @@ close all; clear
 %Property of TEIDESAT
 %Base code created by Leyre Hernández Palacios
 %Modified for TEIDESAT-I by Javier González Vilar
-%contact: teidesat13@ull.edu.es
-
-%%
-%Self notes
-%probar el codigo con un uninodo de un bloque solido a ver si se aproxima
-%al resultado dado
-%corregir parametros deentrada, leerlos desde un excel, conseguido con la K
-%falta con el struct
-
+%Further modified by Eduardo Andrés Navarro Santos
+%contact: teidesat03@ull.edu.es
 
 %% Load or solve
 action = input("Choose action (load/solve): ", "s");
@@ -43,7 +36,7 @@ else
     error("Invalid Command")
 end    
 
-%Save data
+%% Save data
 SaveVar = [0, 0];
 if input("Save data as mathlab file? (y/n): ", "s")== "y"
     SaveVar(1) = 1;
@@ -60,7 +53,7 @@ if SaveVar(1)
    save(filepath)
 end
 if SaveVar(2)
-   disp("Saving on excel... Please, don't open the file yet to avoid errors.")
+   disp("Saving on excel... Please, don't open the file until finalization to avoid errors.")
    SaveResultsToExcel(filepath, 'Temperatures', Results.t, Results.T, {SC.name});
    SaveResultsToExcel(filepath, 'Net heat transfer', Results.t, Results.NetCond, {SC.name});
    SaveResultsToExcel(filepath, 'Heat generation', Results.t, Results.HeatGen, {SC.name});
@@ -73,7 +66,7 @@ if SaveVar(2)
    disp("Done saving!")
 end
 
-% Save to excel function
+%% Save to excel auxiliary function
 
 function SaveResultsToExcel(filename, sheetname, time, result, names)
     % Extract time instances and element names
