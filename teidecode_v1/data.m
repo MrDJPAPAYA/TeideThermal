@@ -27,6 +27,7 @@ Orb.omega = deg2rad(temp.orbit_params(1, 4)); % Longitude of Ascending node[rad]
 Orb.i = deg2rad(temp.orbit_params(1, 5)); % Inclination [rad]
 Orb.radi = Re + 1000*temp.orbit_params(1, 6); % Radius[m]
 T0 = 2*pi/Re*sqrt(Orb.radi^3/g); % Orbital period [s] 
+disp(strcat('Orbital period: ', string(round(T0)), ' seconds'));
 Orb.n = 2*pi/T0; %Angular speed/mean motion [rad/s]
 Orb.nu0 = 0; % Starting anomaly [rad] 
 nu_f = @(t) Orb.nu0 + Orb.n*t; % True anomaly function [rad]
@@ -38,13 +39,13 @@ R.roll = Rmatrix(1, -Att.roll);
 R.Att = R.yaw*R.pitch*R.roll; % Attitude rotation matrix
 R.omega = Rmatrix(2, Orb.omega);
 R.i = Rmatrix(3, Orb.i);
-R.Orb = R.omega*R.i; % Orbital rotation matrix
+R.Orb = R.i*R.omega; % Orbital rotation matrix
 R.nu_f = @(nu) Rmatrix(2, nu); % Mean anomaly rotation matrix function
-R.pos_f = @(Rnu) R.Orb*Rnu; % Position rotation matrix (effect of orbit+anomaly)
+R.pos_f = @(Rnu) Rnu*R.Orb; % Position rotation matrix (effect of orbit+anomaly)
 
 % Alignment vectors
 up = R.Att*[0; 0; 1]; % Earth pointing vector
-us_f = @(Rpos) Rpos*R.Att*[0; 0; -1]; % Sun pointing vector
+us_f = @(Rpos) R.Att*Rpos*[0; 0; -1]; % Sun pointing vector
 
 % Eclipse flag 
 cosbeta_f = @(us) dot(up, us); % beta is the angle between the sun and earth pointing vectors

@@ -5,10 +5,10 @@ Ti = ones(N,1)*InitialT; %[K] Define starting temperature
 %Ti(2) = Tc;
 D = ([SC.m].*[SC.Cp])/dt*ones(N,1); %Vector with heat capacities/dt (N sized)
 %D(2,2) = 0;
-
-t = find(ti>0); %find(ti>9*T0); 
+recordt = 259000; % Time at wich it will start recording data
+t = find(ti>recordt);  
 T = zeros(N,length(t));
-Results.t = find(ti>0); %find(ti>9*T0); 
+Results.t = find(ti>recordt); 
 Results.T = zeros(N,length(t));
 Results.HeatGen = zeros(N,length(t));
 Results.NetCond = zeros(N,length(t));
@@ -71,7 +71,7 @@ for k = 1:length(ti)
     Ti = Ti+(B + NetCond)/D;
 
     %Records data for later usage
-    if  ti(k)>0 %ti(k)>9*T0 % % Set to record data, when sim time is greater than x number of orbits
+    if  ti(k)>recordt
         j = j + 1;
         T(:,j) = Ti; 
         Results.T(:, j) = Ti; % Records temperatures

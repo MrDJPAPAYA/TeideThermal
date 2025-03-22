@@ -58,7 +58,7 @@ if SaveVar(2)
    SaveResultsToExcel(filepath, 'Net heat transfer', Results.t, Results.NetCond, {SC.name});
    SaveResultsToExcel(filepath, 'Heat generation', Results.t, Results.HeatGen, {SC.name});
    if config.SolRad
-       SaveResultsToExcel(filepath, 'Heat by sun and albedo', Results.t, Results.SunRad, {SC.name});
+       SaveResultsToExcel(filepath, 'Heat by sun and albedo', Results.t, Results.SolRad, {SC.name});
    end
    if config.EnvRad
        SaveResultsToExcel(filepath, 'Heat radiated', Results.t, Results.EnvRad, {SC.name});
