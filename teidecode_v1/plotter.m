@@ -7,18 +7,24 @@ figdir = ['../Figures/Orb_case' sprintf('%i', 0 ) '_'];
 figure(1);
 colours = lines(N);
 markers = {'-o','-s','-d','-v','-^','->','-<','-x','-*','-p'};
+Legend = struct("name", []);
 j = 1;
+k = 1;
 for i=1:N
-    %Ensures unique marker and color combination for each node.
-    if mod(i,7) == 0 %Seven colors in the lines colormap
-        j = j+1;
+    if SC(i).display %If a node is for display
+        %Ensures unique marker and color combination for each node.
+        if mod(i,7) == 0 %Seven colors in the lines colormap
+            j = j+1;
+        end
+        %plots temperatures evolution
+        p = plot((t-t(1))/T0,Results.T(i,:)-273.15,markers{j},'Color',colours(i,:),'LineWidth',0.6);
+        p.MarkerIndices = 1:500:length(t);
+        hold on;
+        Legend(k).name = SC(i).name; %Add its name to the legend
+        k = k+1;
     end
-    %plots temperatures evolution
-    p = plot((t-t(1))/T0,Results.T(i,:)-273.15,markers{j},'Color',colours(i,:),'LineWidth',0.6);
-    p.MarkerIndices = 1:500:length(t);
-    hold on;
 end
-legend({SC.name},'Interpreter','latex','Location','eastoutside');
+legend({Legend.name},'Interpreter','latex','Location','eastoutside');
 xlabel('$t/T_0$');
 ylabel('Results.T [$^{\circ}C$]');
 grid on; grid minor;

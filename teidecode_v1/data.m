@@ -80,6 +80,7 @@ for i = 1:N
     SC(i).a = temp.NodesData(i, 6); % Absorptivity
     SC(i).n = [temp.NodesData(i, 7); temp.NodesData(i, 8); temp.NodesData(i, 9)]; % Normal vector to surface
     SC(i).radiates = temp.NodesData(i, 10); % Boolean to see if it radiates
+    SC(i).display = temp.NodesData(i, 11); % Boolean to see if it should be displayed on the plot
 end
 
 %% Import operation Conditions
