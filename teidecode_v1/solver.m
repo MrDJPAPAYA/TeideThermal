@@ -5,7 +5,7 @@ Ti = ones(N,1)*InitialT; %[K] Define starting temperature
 %Ti(2) = Tc;
 D = ([SC.m].*[SC.Cp])/dt*ones(N,1); %Vector with heat capacities/dt (N sized)
 %D(2,2) = 0;
-recordt = 0; % Time at wich it will start recording data
+recordt = 1; % Time at wich it will start recording data
 t = find(ti>recordt);  
 T = zeros(N,length(t));
 Results.t = find(ti>recordt); 
@@ -47,7 +47,7 @@ for k = 1:length(ti)
             if config.SolRad
             cos_s = us.'*SC(i).n; cos_s = cos_s*(cos_s>0);
             cos_p = up.'*SC(i).n; cos_p = cos_p*(cos_p>0);
-            SolRad(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp); % Heat due to albedo and sun
+            SolRad(i) = SC(i).A*(SC(i).a*Gs*(cos_s + cos_p*a*F) + SC(i).e*cos_p*Gp); % Heat due to albedo, earth IR and sun.
             %SolRad(i) = SC(i).A*(SC(i).e*cos_p*Gp); % Heat due to albedo
             end
 

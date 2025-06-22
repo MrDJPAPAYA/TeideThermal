@@ -11,7 +11,7 @@ g = 9.81; %[m/s2]
 a = 0.4; %Earth albedo
 sigma = 5.67E-8; %[W/m2/K4]
 Gs0 = 1371; %[W/m2]
-Gp = 237; %[W/m2] Value at surface. Could adjust this for distance on cold critical cases.
+Gp = 237; %[W/m2] Value at surface. Adjusted below
 
 %% Orbit and orientation
 temp.orbit_params = readtable("Thermal_Data.xlsx", 'Sheet',"Orbital Parameters", VariableNamingRule="preserve");
@@ -31,6 +31,7 @@ disp(strcat('Orbital period: ', string(round(T0)), ' seconds'));
 Orb.n = 2*pi/T0; %Angular speed/mean motion [rad/s]
 Orb.nu0 = 0; % Starting anomaly [rad] 
 nu_f = @(t) Orb.nu0 + Orb.n*t; % True anomaly function [rad]
+Gp = Gp*(Re/Orb.radi)^2;
 
 % Rotation matrices
 R.yaw = Rmatrix(3, -Att.yaw);
