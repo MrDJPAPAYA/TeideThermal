@@ -57,7 +57,7 @@ for k = 1:length(ti)
         end
     end
 
-    while k > changetime % Changes mode when time is due and defines new time
+    while ti(k) > changetime % Changes mode when time is due and defines new time
         m = m + 1;
         changetime = Mode(m).time;
     end
@@ -68,7 +68,7 @@ for k = 1:length(ti)
     NetCond = C*Ti; 
 
     % Update temperature
-    Ti = Ti+(B + NetCond)/D;
+    Ti = Ti+dt*(B + NetCond)/D;
 
     %Records data for later usage
     if  ti(k)>recordt
@@ -78,10 +78,10 @@ for k = 1:length(ti)
         Results.HeatGen(:, j) = Mode(m).HeatGen(:, :); % Records heat generation
         Results.NetCond(:, j) = NetCond; % Records net heat conduction
         if config.SolRad
-            Results.SolRad(:, j) = SolRad; % Records temperatures
+            Results.SolRad(:, j) = SolRad; % Records Radiation to Earth and Sun
         end
         if config.EnvRad
-            Results.EnvRad(:, j) = EnvRad; % Records temperatures
+            Results.EnvRad(:, j) = EnvRad; % Records Enviroment radiation
         end
     end
 end

@@ -17,7 +17,7 @@ for i=1:N
             j = j+1;
         end
         %plots temperatures evolution
-        p = plot((t-t(1))/T0,Results.T(i,:)-273.15,markers{j},'Color',colours(k,:),'LineWidth',0.6);
+        p = plot((t*dt)/T0,Results.T(i,:)-273.15,markers{j},'Color',colours(k,:),'LineWidth',0.6);
         p.MarkerIndices = 1:500:length(t);
         hold on;
         Legend(k).name = SC(i).name; %Add its name to the legend
@@ -40,7 +40,7 @@ Tmax = max(Results.T,[],'all');
 t_Tmax = t(t_Tmax);
 
 hold on;
-plot((t_Tmax-t(1))/T0,Tmax-273.15,'ro','HandleVisibility','off');
+plot((t_Tmax*dt)/T0,Tmax-273.15,'ro','HandleVisibility','off');
 
 %text((t_Tmax(1)-t(1))/T0+0.17,Tmax-290,...
 %    ['Maximum temperature: $' sprintf('%0.2f', Tmax-273.15) '^{\circ}C$' ...

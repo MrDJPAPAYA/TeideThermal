@@ -28,6 +28,8 @@ elseif action == "load"
     filepath = fullfile(path,filename);
     if isfile(filepath)
     load(filepath);
+    %Plot data
+    plotter;
     %If file couldnt be found
     else
     disp(['File ' filename ' does not exist.']);
