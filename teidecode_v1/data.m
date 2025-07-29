@@ -8,7 +8,7 @@ set(groot,'DefaultTextInterpreter','latex');
 Tc = 32+273.15; %[K]
 Re = 6371e3; % Earth radius [m]
 g = 9.81; %[m/s2]
-a = 0.4; %Earth albedo
+a = 0.39; %Earth albedo
 sigma = 5.67E-8; %[W/m2/K4]
 Gs0 = 1371; %[W/m2]
 Gp = 237; %[W/m2] Value at surface. Adjusted below
@@ -37,16 +37,18 @@ Gp = Gp*(Re/Orb.radi)^2;
 R.yaw = Rmatrix(3, -Att.yaw);
 R.pitch = Rmatrix(2, -Att.pitch);
 R.roll = Rmatrix(1, -Att.roll);
-R.Att = R.yaw*R.pitch*R.roll; % Attitude rotation matrix
+R.Att = R.roll*R.pitch*R.yaw; % Attitude rotation matrix
 R.omega = Rmatrix(2, Orb.omega);
 R.i = Rmatrix(3, Orb.i);
-R.Orb = R.i*R.omega; % Orbital rotation matrix
+R.Orb = R.i*R.omega; % Orbital rotation matrix 
 R.nu_f = @(nu) Rmatrix(2, nu); % Mean anomaly rotation matrix function
-R.pos_f = @(Rnu) Rnu*R.Orb; % Position rotation matrix (effect of orbit+anomaly)
+R.pos_f = @(Rnu) Rnu*R.Orb; % Position rotation matrix (effect of
+%orbit+anomaly) 
+
 
 % Alignment vectors
 up = R.Att*[0; 0; 1]; % Earth pointing vector
-us_f = @(Rpos) R.Att*Rpos*[0; 0; -1]; % Sun pointing vector
+us_f = @(Rpos) R.Att*Rpos*[0; 0; -1]; % Sun pointing vector 
 
 % Eclipse flag 
 cosbeta_f = @(us) dot(up, us); % beta is the angle between the sun and earth pointing vectors
@@ -59,11 +61,14 @@ W = sqrt(A); %Width [m]
 
 %% Import the nodes data
 temp.NodesData = readtable("Thermal_Data.xlsx", 'Sheet',"Nodes thermal properties", VariableNamingRule="preserve");
-
+temp.innit = readtable("InnitT.xlsx", 'Sheet',"startup",VariableNamingRule="preserve");
 % Convert to output type
 temp.NodesNames = temp.NodesData{ :, 1};
 temp.NodesData = temp.NodesData(1:end,2:end); %Crop text header column
 temp.NodesData = table2array(temp.NodesData);
+temp.innit = temp.innit(1:end,2:end); %Crop text header column
+temp.innit = table2array(temp.innit);
+innit = temp.innit(:,1);
 
 % Assign into struct element and save number
 

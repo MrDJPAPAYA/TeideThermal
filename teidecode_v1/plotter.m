@@ -25,22 +25,20 @@ for i=1:N
     end
 end
 legend({Legend.name},'Interpreter','latex','Location','eastoutside');
-xlabel(['Orbits. 1 orb = ' sprintf('%.0f',T0) ' Seconds']);
+xlabel('Orbits');
 ylabel('Results.T [$^{\circ}C$]');
 grid on; grid minor;
 set(gcf,'Position',[488.2000  296.2000  844.8000  465.6000]);
-title(['Temperature evolution' newline' '$\theta_{sc} = ' ...
-    sprintf('%.0f',rad2deg(Att.pitch)) '^{\circ}$ and $\phi_{sc} = ' ...
-    sprintf('%.0f',rad2deg(Att.roll)) '^{\circ}$'], 'Interpreter','latex');
-%saveas(gcf,[figdir 'Tev' '.png']);
+title(['Temperature evolution' newline' '1 Orbit $\approx$ ' sprintf('%.0f',T0) ' Seconds'], 'Interpreter','latex');
+
 
 %% Maximum temperature
-Tmax = max(Results.T,[],'all');
-[n_Tmax, t_Tmax] = find(Results.T==Tmax);
-t_Tmax = t(t_Tmax);
+%Tmax = max(Results.T,[],'all');
+%[n_Tmax, t_Tmax] = find(Results.T==Tmax);
+%t_Tmax = t(t_Tmax);
 
-hold on;
-plot((t_Tmax*dt)/T0,Tmax-273.15,'ro','HandleVisibility','off');
+%hold on;
+%plot((t_Tmax*dt)/T0,Tmax-273.15,'ro','HandleVisibility','off');
 
 %text((t_Tmax(1)-t(1))/T0+0.17,Tmax-290,...
 %    ['Maximum temperature: $' sprintf('%0.2f', Tmax-273.15) '^{\circ}C$' ...

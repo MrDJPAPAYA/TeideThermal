@@ -2,8 +2,9 @@
 
 %% Solver
 Ti = ones(N,1)*InitialT; %[K] Define starting temperature
+%Ti = innit; %[K] Define starting temperature
 %Ti(2) = Tc;
-D = ([SC.m].*[SC.Cp])/dt*ones(N,1); %Vector with heat capacities/dt (N sized)
+D = ([SC.m].*[SC.Cp]).'; %Vector with heat capacities (N sized)
 %D(2,2) = 0;
 recordt = 1; % Time at wich it will start recording data
 t = find(ti>recordt);  
@@ -68,7 +69,7 @@ for k = 1:length(ti)
     NetCond = C*Ti; 
 
     % Update temperature
-    Ti = Ti+dt*(B + NetCond)/D;
+    Ti = Ti+dt*(B + NetCond)./D;
 
     %Records data for later usage
     if  ti(k)>recordt
