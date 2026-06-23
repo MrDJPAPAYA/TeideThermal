@@ -17,7 +17,7 @@ for i=1:N
             j = j+1;
         end
         %plots temperatures evolution
-        p = plot((t*dt)/T0,Results.T(i,:)-273.15,markers{j},'Color',colours(k,:),'LineWidth',0.6);
+        p = plot((Results.t*dt)/T0,Results.T(i,:)-273.15,markers{j},'Color',colours(k,:),'LineWidth',0.6);
         p.MarkerIndices = 1:500:length(t);
         hold on;
         Legend(k).name = SC(i).name; %Add its name to the legend
